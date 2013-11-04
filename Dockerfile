@@ -35,10 +35,16 @@ ADD . /docker-salt
 RUN cd /docker-salt && \
     cp --backup master.conf /etc/salt/master && \
     cp --backup minion.conf /etc/salt/minion && \
-    cp supervisord-salt.conf /etc/supervisor/conf.d
+    cp supervisord-salt.conf /etc/supervisor/conf.d && \
+    mkdir /srv/salt
 
-RUN salt-master -d &&  salt-minion -d && sleep 3 && \
-    salt-key -A -y
+RUN cd /tmp && \
+    salt-key --gen-keys=master-minion && \
+    mkdir -p /etc/salt/pki/master/minions && \
+    cp master-minion.pub /etc/salt/pki/master/minions/master-minion && \
+    mkdir -p /etc/salt/pki/minion && \
+    cp master-minion.pub /etc/salt/pki/minion/minion.pub && \
+    cp master-minion.pem /etc/salt/pki/minion/minion.pem
 
 #Halite User
 RUN useradd admin && \
