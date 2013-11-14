@@ -21,6 +21,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server && \
 #Utilities
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils
 
+RUN echo "0.17.2" > version.txt
+
 #Salt Repo
 RUN echo 'deb http://ppa.launchpad.net/saltstack/salt/ubuntu precise main' > /etc/apt/sources.list.d/saltstack.list && \
     wget -q -O- "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x4759FA960E27C0A6" | apt-key add - && \
@@ -47,13 +49,16 @@ RUN pip install -U halite && \
 RUN useradd admin && \
     echo "admin:admin" | chpasswd
 
+#Salt-SSH
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y salt-ssh
+
 #Configuration
 ADD . /docker-salt
 RUN cd /docker-salt && \
-    cp --backup master.conf /etc/salt/master && \
-    cp --backup minion.conf /etc/salt/minion && \
     cp supervisord-salt.conf /etc/supervisor/conf.d && \
-    mkdir /srv/salt
+    cp --backup -R salt/* /etc/salt && \
+    mkdir -p /srv/salt && \
+    cp -R srv/* /srv
 
-EXPOSE 22 8080
+EXPOSE 22 4506 8080
 
