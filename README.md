@@ -1,22 +1,37 @@
-docker-salt
+docker-salt-grandmaster
 ==========
 
 Run Salt-Master, Salt-Minion, and Halite inside Docker
 Also runs Kibana/Logstash and Graphite insider their own containers.
 
-Halite/Salt UI
+####Halite/Salt UI
 
 http://localhost:49080
 
-Kibana
+####Kibana
 
 http://localhost:49082
 
-Graphite
+####Graphite
 
 http://localhost:49880
 
-Instructions
+###Instructions
 
 1. run ```./build```
 2. run ```./run```
+
+###Boostrapping
+Create/Edit /etc/salt/roster file
+```
+<id>:
+    host: <host name or ip>
+    user: <user with sudo>
+    passwd: <pwd>
+    sudo: True
+```
+
+Also, make sure /etc/sudoers file is configured for NOPASSWD
+```%admin ALL=NOPASSWD: ALL```
+
+
