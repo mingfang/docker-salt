@@ -19,3 +19,8 @@ halite:
 file_roots:
   base:
     - /srv/salt
+
+auto_accept: True
+pillar_opts: False
+
+

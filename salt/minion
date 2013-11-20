@@ -1,3 +1,15 @@
 master: localhost
 master_port: 49506
 id: master-minion
+
+state_verbose: True
+log_level: debug
+log_level_logfile: debug
+
+startup_states: highstate
+
+logstash_zmq_handler:
+  address: tcp://10.10.20.188:49021
+
+carbon.host: 10.10.20.188
+carbon.port: 49003

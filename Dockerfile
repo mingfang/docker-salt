@@ -5,7 +5,7 @@ RUN echo 'deb http://archive.ubuntu.com/ubuntu precise main universe' > /etc/apt
     apt-get update
 
 #Prevent daemon start during install
-RUN	echo '#!/bin/sh\nexit 101' > /usr/sbin/policy-rc.d && \
+RUN echo '#!/bin/sh\nexit 101' > /usr/sbin/policy-rc.d && \
     chmod +x /usr/sbin/policy-rc.d
 
 #Supervisord
@@ -19,9 +19,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server && \
 	echo 'root:root' |chpasswd
 
 #Utilities
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils
-
-RUN echo "0.17.2" > version.txt
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat
 
 #Salt Repo
 RUN echo 'deb http://ppa.launchpad.net/saltstack/salt/ubuntu precise main' > /etc/apt/sources.list.d/saltstack.list && \
@@ -29,7 +27,7 @@ RUN echo 'deb http://ppa.launchpad.net/saltstack/salt/ubuntu precise main' > /et
     apt-get update
 
 #Salt
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y salt-master salt-minion salt-syndic
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y salt-master salt-minion salt-syndic salt-ssh
 
 #Preseed local master-minion
 RUN cd /tmp && \
@@ -48,9 +46,6 @@ RUN pip install -U halite && \
 #Halite User
 RUN useradd admin && \
     echo "admin:admin" | chpasswd
-
-#Salt-SSH
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y salt-ssh
 
 #Configuration
 ADD . /docker-salt
