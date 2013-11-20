@@ -29,6 +29,9 @@ RUN echo 'deb http://ppa.launchpad.net/saltstack/salt/ubuntu precise main' > /et
 #Salt
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y salt-master salt-minion salt-syndic salt-ssh
 
+#Munin
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y munin-node
+
 #Preseed local master-minion
 RUN cd /tmp && \
     salt-key --gen-keys=master-minion && \
