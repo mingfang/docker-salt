@@ -32,6 +32,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y salt-master salt-minion sa
 #Munin
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y munin-node
 
+#Docker client only
+RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-latest && \
+    chmod +x /usr/local/bin/docker
+
+
 #Preseed local master-minion
 RUN cd /tmp && \
     salt-key --gen-keys=master-minion && \

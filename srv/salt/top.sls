@@ -1,12 +1,11 @@
 base:
   'master-minion':
-    - munin.munin-node
-    - docker.docker
     - docker.docker-sock
     - git.git
-    - brandhub.kibana-docker
+    - kibana.kibana-docker
     - graphite.graphite-docker
 
+  #Common for all minions except the master minion
   '* and not master-minion':
     - match: compound
     - minion.minion
@@ -21,5 +20,5 @@ base:
   'ubuntu':
     - brandhub.brandhub-docker
 
-  'lga-bhub*.pulse.prod':
+  'lga-bhub*':
     - brandhub.brandhub-docker
