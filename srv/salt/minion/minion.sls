@@ -25,6 +25,8 @@ salt-minion:
   pkg.installed:
     - version: 0.17.2-1precise
   service.running:
+    - require:
+      - pkg: munin-node
     - watch:
       - file: /etc/salt/minion
       - pkg: salt-minion
