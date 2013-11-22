@@ -17,11 +17,12 @@ kibana-rm:
       - cmd: kibana-kill
 
 kibana-build:
-  cmd.run:
+  cmd.wait:
     - name: docker build -t kibana .
     - cwd: /kibana-docker
     - timeout: 120
-    - unless: docker images | grep kibana
+    - watch:
+      - git: kibana-checkout
 
 kibana-run:
   cmd.run:

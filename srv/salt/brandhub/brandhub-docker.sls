@@ -17,11 +17,12 @@ brandhub-rm:
       - cmd: brandhub-kill
 
 brandhub-build:
-  cmd.run:
+  cmd.wait:
     - name: docker build -t brandhub .
     - cwd: /brandhub-docker
     - timeout: 120
-    - unless: docker images | grep brandhub
+    - watch:
+      - git: brandhub-checkout
 
 brandhub-run:
   cmd.run:

@@ -17,13 +17,14 @@ graphite-rm:
       - cmd: graphite-kill
 
 graphite-build:
-  cmd.run:
+  cmd.wait:
     - name: docker build -t graphite .
     - cwd: /docker-graphite
     - timeout: 120
-    - unless: docker images | grep graphite
+    - watch:
+      - git: graphite-checkout
 
 graphite-run:
   cmd.run:
-    - name: docker run -d -p 49880:80 -p 49003:2003 -name graphite graphite
+    - name: docker run -d -p 49185:80 -p 49186:8080 -p 49003:2003 -name graphite graphite
     - unless: docker ps -a|grep graphite
