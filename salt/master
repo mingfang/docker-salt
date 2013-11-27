@@ -1,3 +1,4 @@
+master_ip: 10.10.20.188
 publish_port: 49505
 ret_port: 49506
 
@@ -21,6 +22,6 @@ file_roots:
     - /srv/salt
 
 auto_accept: True
-pillar_opts: False
+pillar_opts: True
 
 

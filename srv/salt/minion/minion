@@ -1,6 +1,4 @@
-#master: 192.168.1.57
-master: 10.10.20.188
-#master: 10.10.50.74
+master: {{master_ip}}
 master_port: 49506
 
 cache_jobs: False
@@ -9,15 +7,9 @@ state_verbose: True
 log_level: info
 log_level_logfile: debug
 
-logstash_udp_handler:
-  host: 10.10.20.188
-#  host: 192.168.1.58
-  port: 49099
-
 logstash_zmq_handler:
-#  address: tcp://192.168.1.58:49021
-  address: tcp://10.10.20.188:49021
+  address: tcp://{{master_ip}}:49021
 
-carbon.host: 10.10.20.188
+carbon.host: {{master_ip}}
 carbon.port: 49003
 

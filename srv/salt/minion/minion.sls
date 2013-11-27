@@ -18,6 +18,9 @@ salt_repo:
     - source: salt://minion/minion
     - user: root
     - group: root
+    - template: jinja
+    - context:
+      master_ip: {{ pillar['master']['master_ip'] }}
     - require:
       - pkg: salt-minion
 
