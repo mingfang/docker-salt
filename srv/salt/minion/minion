@@ -1,0 +1,15 @@
+master: {{master_ip}}
+master_port: 49506
+
+cache_jobs: False
+backup_mode: minion
+state_verbose: True
+log_level: info
+log_level_logfile: debug
+
+logstash_zmq_handler:
+  address: tcp://{{master_ip}}:49021
+
+carbon.host: {{master_ip}}
+carbon.port: 49003
+

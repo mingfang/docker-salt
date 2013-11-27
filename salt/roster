@@ -1,0 +1,8 @@
+#Add new host here to bootstrap using salt-ssh
+#<name>:
+#    host: <host address>
+#    user: <user with sudo>
+#    passwd: <passwd>
+#    sudo: True
+#
+# make sure /etc/sudoer configure this user/group with NOPASSWD:

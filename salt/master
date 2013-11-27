@@ -1,3 +1,4 @@
+master_ip: 10.10.20.188
 publish_port: 49505
 ret_port: 49506
 
@@ -19,3 +20,8 @@ halite:
 file_roots:
   base:
     - /srv/salt
+
+auto_accept: True
+pillar_opts: True
+
+
