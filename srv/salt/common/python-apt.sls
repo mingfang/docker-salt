@@ -1,0 +1,2 @@
+python-apt:
+  pkg.installed
