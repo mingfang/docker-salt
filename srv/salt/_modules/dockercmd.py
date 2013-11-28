@@ -33,6 +33,22 @@ def ps(all=None):
 def info():
     return __salt__['cmd.run']('docker info')
 
+def inspect(name):
+    run_all = __salt__['cmd.run_all']
+    result = run_all('docker inspect ' + name, quiet=True)
+    if result['retcode'] == 0:
+        stdout = result['stdout']
+        _yaml = yaml.safe_load(stdout)
+        return _yaml[0]
+    else:
+        return result
+
+def kill(name):
+    return __salt__['cmd.run_all']('docker kill ' + name)
+
+def rm(name):
+    return __salt__['cmd.run_all']('docker rm ' + name)
+
 def run(name, image, ports=None, volumes=None, reload=False, **kwargs):
     if name == image:
         raise CommandExecutionError('Container name must be different from image')
@@ -50,19 +66,6 @@ def run(name, image, ports=None, volumes=None, reload=False, **kwargs):
     if volumes is not None:
         for v in volumes:
             _volumes.extend(['-v', v])
-            
-    #kill existing container
-    result = run_all('docker inspect ' + name, quiet=True)
-    if result['retcode'] == 0:
-        if not reload:
-            return 'A container with name="%s" already exist.' % (name)
-        else:
-            stdout = result['stdout']
-            _yaml = yaml.safe_load(stdout)
-            #upper case ID is for running container
-            id = _yaml[0]['ID']
-            run_all('docker kill ' + id)
-            run_all('docker rm ' + id)
 
     #build and run cmd
     cmd = ['docker', 'run', '-d']
