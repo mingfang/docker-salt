@@ -13,3 +13,7 @@ base:
     - docker.docker
     - docker.docker-service
     - git.git
+
+  #Minecraft
+#  'minecraft':
+#    - minecraft.minecraft-docker
