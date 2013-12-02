@@ -67,7 +67,7 @@ def built(name,
 
     #check if already built
     inspect = __salt__['dockercmd.inspect'](name)
-    if inspect['id'] and not force:
+    if inspect.get('id', '') and not force:
         ret['result'] = True
         ret['comment'] = '"%s" already built with id="%s".' % (name, inspect['id'])
         return ret
