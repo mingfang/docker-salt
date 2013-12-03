@@ -6,22 +6,25 @@ Also runs Kibana/Logstash and Graphite insider their own containers.
 
 ####Halite/Salt UI
 
-http://localhost:49080
+http://<master>:49080
 
 ####Kibana
 
-http://localhost:49082
+http://<master>:49082
 
 ####Graphite
 
-http://localhost:49880
+http://<master>:49880
 
 ###Instructions
 
-1. run ```./build```
-2. run ```./run```
+1. edit file salt/master by changing master_ip to reflect the ip address of your master
+2. run ```./build```
+3. run ```./run```
 
 ###Boostrapping
+ssh into the master ```ssh root@<master> -p 49022```, password is root
+
 Create/Edit /etc/salt/roster file
 ```
 <id>:
