@@ -85,10 +85,8 @@ def built(name,
 
 def mod_watch(name, **kwargs):
     if kwargs['sfun'] == 'running':
-        if kwargs.get('reload'):
-            kwargs.pop('reload')
+        kwargs.pop('reload', None)
         return running(name, reload=True, **kwargs)
     elif kwargs['sfun'] == 'built':
-        if kwargs.get('force'):
-            kwargs.pop('force')
+        kwargs.pop('force', None)
         return built(name, force=True, **kwargs)
