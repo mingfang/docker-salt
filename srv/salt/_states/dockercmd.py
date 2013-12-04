@@ -43,7 +43,7 @@ def running(name,
             ret['comment'] = 'killed and removed "%s" ' % (name)
 
     try:
-        result = __salt__['dockercmd.run'](name, image, ports, volumes, reload)
+        result = __salt__['dockercmd.run'](name, image, ports, volumes)
         if result['retcode'] == 0:
             ret['result'] = True
             if isinstance(result, dict):

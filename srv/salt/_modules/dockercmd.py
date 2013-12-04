@@ -49,7 +49,7 @@ def kill(name):
 def rm(name):
     return __salt__['cmd.run_all']('docker rm ' + name)
 
-def run(name, image, ports=None, volumes=None, reload=False, **kwargs):
+def run(name, image, ports=None, volumes=None, **kwargs):
     if name == image:
         raise CommandExecutionError('Container name must be different from image')
     _name = ['-name', name]
