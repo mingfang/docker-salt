@@ -16,5 +16,6 @@
     - name: {{container_name}}1
     - image: {{container_name}}
     - ports: {{container_ports | default(None)}}
+    - reload: {{ pillar.get('reload', False) }}
     - watch:
       - dockercmd: {{container_name}}-built
