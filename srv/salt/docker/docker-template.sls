@@ -15,7 +15,8 @@
   dockercmd.running:
     - name: {{container_name}}1
     - image: {{container_name}}
-    - ports: {{container_ports | default(None)}}
+    - ports: {{container_ports | default([])}}
+    - volumes: {{container_volumes | default([])}}
     - reload: {{ pillar.get('reload', False) }}
     - watch:
       - dockercmd: {{container_name}}-built
