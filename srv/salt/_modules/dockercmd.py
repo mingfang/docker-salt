@@ -7,6 +7,7 @@ import salt.utils
 from salt.exceptions import CommandExecutionError
 import yaml
 import os
+import logging
 
 def __virtual__():
     '''
@@ -16,6 +17,7 @@ def __virtual__():
         return 'dockercmd'
     return False
 
+log = logging.getLogger(__name__)
 
 def version():
     '''
@@ -33,6 +35,9 @@ def ps(all=None):
 def info():
     return __salt__['cmd.run']('docker info')
 
+def images():
+    return __salt__['cmd.run']('docker images')
+
 def inspect(name):
     run_all = __salt__['cmd.run_all']
     result = run_all('docker inspect ' + name, quiet=True)
@@ -48,6 +53,9 @@ def kill(name):
 
 def rm(name):
     return __salt__['cmd.run_all']('docker rm ' + name)
+
+def rmi(name):
+    return __salt__['cmd.run_all']('docker rmi ' + name)
 
 def run(name, image, ports=None, volumes=None, **kwargs):
     if name == image:
@@ -84,3 +92,10 @@ def build(name, dir, nocache=False, **kwargs):
     cmd.extend(['-t', name])
     cmd.append(dir)
     return run_all(cmd, cwd=dir, env=kwargs.get('env'), python_shell=False)
+
+# def save(name, dir, **kwargs):
+#     run_all = __salt__['cmd.run_all']
+#     # cmd = ['docker', 'save', name, '>', name + '.tar']
+#     cmd = 'docker save %s > %s.tar' % (name, name)
+#     log.info('cmd=' + cmd)
+#     return run_all(cmd, cwd=dir, env=kwargs.get('env'), python_shell=False)
