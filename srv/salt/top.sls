@@ -1,19 +1,28 @@
 base:
   'master-minion':
     - docker.docker-sock
-    - git.git
-    - kibana.kibana-docker
-    - graphite.graphite-docker
+    - git
+    - kibana
+    - graphite
 
   #Common for all minions except the master minion
   '* and not master-minion':
     - match: compound
-    - minion.minion
-    - munin.munin-node
-    - docker.docker
+    - minion
+    - munin
+    - docker
     - docker.docker-service
-    - git.git
+    - git
 
   #Minecraft
 #  'minecraft':
-#    - minecraft.minecraft-docker
+#    - minecraft
+
+  #IPython
+#  'ipython_host':
+#    - ipython
+
+  #Dashing
+#  'dashing_host':
+#    - dashing
+
