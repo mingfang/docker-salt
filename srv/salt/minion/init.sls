@@ -26,7 +26,7 @@ salt_repo:
 
 salt-minion:
   pkg:
-    - installed
+    - latest
   service.running:
     - require:
       - pkg: munin-node
