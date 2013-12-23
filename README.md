@@ -1,4 +1,3 @@
-
 Run Salt-Master, Salt-Minion, and Halite inside Docker
 Also runs Kibana/Logstash and Graphite insider their own containers.
 
@@ -6,15 +5,15 @@ Also runs Kibana/Logstash and Graphite insider their own containers.
 
 ####Halite/Salt UI
 
-http://<master>:49080
+http://localhost:49080
 
 ####Kibana
 
-http://<master>:49082
+http://localhost:49082
 
 ####Graphite
 
-http://<master>:49880
+http://localhost:49880
 
 ###Instructions
 
