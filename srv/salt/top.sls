@@ -26,3 +26,6 @@ base:
 #  'dashing_host':
 #    - dashing
 
+  #Redis
+#  'redis_host':
+#    - redis
