@@ -35,7 +35,7 @@ def running(name,
         is_running = state.get('Running', False)
         if is_running and not reload:
             ret['result'] = True
-            ret['comment'] = '"%s" is already running.' % (name)
+            ret['comment'] = '"%s" is already running with ID="%s".' % (name, inspect['ID'])
             return ret
         else:
             __salt__['dockercmd.kill'](name)
