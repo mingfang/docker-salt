@@ -1,0 +1,6 @@
+#!/bin/sh
+
+#sv start socklog-unix || exit 1
+
+exec 2>&1
+exec /usr/sbin/sshd -D -e

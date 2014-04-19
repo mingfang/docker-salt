@@ -1,0 +1,6 @@
+#!/bin/sh
+
+sv start master || exit 1
+
+exec 2>&1
+exec /usr/bin/salt-minion

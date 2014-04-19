@@ -1,24 +1,17 @@
 FROM ubuntu
  
-RUN echo 'deb http://archive.ubuntu.com/ubuntu precise main universe' > /etc/apt/sources.list && \
-    echo 'deb http://archive.ubuntu.com/ubuntu precise-updates universe' >> /etc/apt/sources.list && \
-    apt-get update
+RUN apt-get update
 
-#Prevent daemon start during install
-RUN dpkg-divert --local --rename --add /sbin/initctl && ln -s /bin/true /sbin/initctl
-
-#Supervisord
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y supervisor && \
-	mkdir -p /var/log/supervisor
-CMD ["/usr/bin/supervisord", "-n"]
+#Runit
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y runit 
+CMD /usr/sbin/runsvdir-start
 
 #SSHD
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server && \
-	mkdir /var/run/sshd && \
-	echo 'root:root' |chpasswd
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server &&	mkdir -p /var/run/sshd && \
+    echo 'root:root' |chpasswd
 
 #Utilities
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat tree htop unzip sudo
 
 #Salt Repo
 RUN echo 'deb http://ppa.launchpad.net/saltstack/salt/ubuntu precise main' > /etc/apt/sources.list.d/saltstack.list && \
@@ -55,12 +48,17 @@ RUN useradd admin && \
     echo "admin:admin" | chpasswd
 
 #Configuration
-ADD . /docker-salt
-RUN cd /docker-salt && \
-    cp supervisord-salt.conf /etc/supervisor/conf.d && \
+ADD . /docker
+
+#Runit Automatically setup all services in the sv directory
+RUN for dir in /docker/sv/*; do echo $dir; chmod +x $dir/run $dir/log/run; ln -s $dir /etc/service/; done
+
+RUN cd /docker && \
     cp --backup -R salt/* /etc/salt && \
     mkdir -p /srv/salt && \
     cp -R srv/* /srv
 
+ENV HOME /root
+WORKDIR /root
 EXPOSE 22 4506 8080
 
