@@ -1,17 +1,21 @@
-FROM ubuntu
+FROM ubuntu:14.04
  
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 
 #Runit
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y runit 
+RUN apt-get install -y runit 
 CMD /usr/sbin/runsvdir-start
 
 #SSHD
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server &&	mkdir -p /var/run/sshd && \
+RUN apt-get install -y openssh-server && \
+    mkdir -p /var/run/sshd && \
     echo 'root:root' |chpasswd
+RUN sed -i "s/session.*required.*pam_loginuid.so/#session    required     pam_loginuid.so/" /etc/pam.d/sshd
+RUN sed -i "s/PermitRootLogin without-password/#PermitRootLogin without-password/" /etc/ssh/sshd_config
 
 #Utilities
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat tree htop unzip sudo
+RUN apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common
 
 #Salt Repo
 RUN echo 'deb http://ppa.launchpad.net/saltstack/salt/ubuntu precise main' > /etc/apt/sources.list.d/saltstack.list && \
@@ -19,10 +23,10 @@ RUN echo 'deb http://ppa.launchpad.net/saltstack/salt/ubuntu precise main' > /et
     apt-get update
 
 #Salt
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y salt-master salt-minion salt-syndic salt-ssh
+RUN apt-get install -y salt-master salt-minion salt-syndic salt-ssh
 
 #Munin
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y munin-node
+RUN apt-get install -y munin-node
 
 #Docker client only
 RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-latest && \
@@ -39,7 +43,7 @@ RUN cd /tmp && \
     cp master-minion.pem /etc/salt/pki/minion/minion.pem
 
 #Halite
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python-pip gcc python-dev libevent-dev
+RUN apt-get install -y python-pip gcc python-dev libevent-dev
 RUN pip install -U halite && \
     pip install CherryPy
 
@@ -50,13 +54,13 @@ RUN useradd admin && \
 #Configuration
 ADD . /docker
 
-#Runit Automatically setup all services in the sv directory
-RUN for dir in /docker/sv/*; do echo $dir; chmod +x $dir/run $dir/log/run; ln -s $dir /etc/service/; done
-
 RUN cd /docker && \
     cp --backup -R salt/* /etc/salt && \
     mkdir -p /srv/salt && \
     cp -R srv/* /srv
+
+#Add runit services
+ADD sv /etc/service 
 
 ENV HOME /root
 WORKDIR /root
