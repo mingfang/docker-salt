@@ -1,3 +1,5 @@
+Notice: Kubernetes has replaced many of the concepts below.  Go here [https://github.com/mingfang/diy-kubernetes](https://github.com/mingfang/diy-kubernetes) for Kuberenetes instructions.
+
 Run Salt-Master, Salt-Minion, and Halite inside Docker
 Also runs Kibana/Logstash and Graphite insider their own containers.
 
